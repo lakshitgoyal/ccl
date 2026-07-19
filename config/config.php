@@ -11,8 +11,10 @@ return [
     'google_sheets' => [
         'credentials_path' => dirname(__DIR__) . '/credentials.json',
         'spreadsheet_id'   => '1CV06Zv0bE47aFHV9lsGRoIZCdHUhHGgj62P0M4GRcAw',
-    ],
-    
+        ],
+        
+        'sheets_webhook_url' => 'https://script.google.com/macros/s/AKfycbxt5oIdemVItc2tPpgIzPliKEeOmHhtzUeUyJwiGgSMoxKRxKwqjvo0mh-eLQYJSGxx/exec',
+        'cacert_path'        => dirname(__DIR__) . '/certs/cacert.pem',
     'email' => [
         'from_address' => 'khelbharat2026@gmail.com', // Email sending notifications
         'from_name'    => 'Champion Cricket League',

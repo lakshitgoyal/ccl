@@ -28,6 +28,10 @@ use Razorpay\Api\Errors\Error as RazorpayError;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception as PHPMailerException;
 
+use Google\Client as GoogleClient;
+use Google\Service\Sheets;
+use Google\Service\Sheets\ValueRange;
+
 // --- 2. Request Method and Input Validation ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -61,6 +65,47 @@ $city = htmlspecialchars(trim($_POST['city']), ENT_QUOTES, 'UTF-8');
 $couponCode = isset($_POST['c-code']) && trim($_POST['c-code']) !== '' ? htmlspecialchars(trim($_POST['c-code']), ENT_QUOTES, 'UTF-8') : 'N/A';
 $sanitizedData = compact('regId', 'name', 'age', 'phone', 'email', 'speciality', 'state', 'city', 'couponCode');
 error_log("[{$regId}] Input data sanitized successfully.");
+
+// --- 3b. Google Sheets Logging (via Apps Script webhook) ---
+// Isolated in its own try-catch so a Sheets failure never blocks email or payment.
+try {
+    error_log("[{$regId}] Sending data to Google Sheets webhook.");
+
+    $payload = json_encode([
+        'regId'      => $regId,
+        'date'       => date('d-M-Y H:i:s'),
+        'name'       => $name,
+        'age'        => $age,
+        'phone'      => $phone,
+        'email'      => $email,
+        'speciality' => $speciality,
+        'state'      => $state,
+        'city'       => $city,
+        'couponCode' => $couponCode,
+    ]);
+
+    $ch = curl_init($config['sheets_webhook_url']);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_CAINFO, $config['cacert_path']);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);   // <-- add this
+    curl_setopt($ch, CURLOPT_MAXREDIRS, 3);           
+
+    $result = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        error_log("[{$regId}] WARNING: Sheets webhook cURL error: " . curl_error($ch));
+    } else {
+        error_log("[{$regId}] Sheets webhook responded: " . $result);
+    }
+    curl_close($ch);
+
+} catch (\Exception $e) {
+    error_log("[{$regId}] WARNING: Sheets webhook logging failed. Error: " . $e->getMessage());
+}
 
 // --- 4. PHPMailer Email Sending ---
 // This is in its own try-catch so an email failure doesn't stop the payment process.
