@@ -1,11 +1,18 @@
 FROM php:8.2-apache
 
+# Install Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
 WORKDIR /var/www/html
 
-COPY . /var/www/html/
+# Install PHP dependencies
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
-RUN a2enmod rewrite
+# Copy application
+COPY . .
 
+# Apache configuration
 COPY apache.conf /etc/apache2/sites-available/000-default.conf
 
 EXPOSE 80
