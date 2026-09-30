@@ -1,5 +1,15 @@
 FROM php:8.2-apache
 
+# Install system packages required by Composer
+RUN apt-get update && apt-get install -y \
+    unzip \
+    libzip-dev \
+    && docker-php-ext-install zip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Enable Apache rewrite module
+RUN a2enmod rewrite
+
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
