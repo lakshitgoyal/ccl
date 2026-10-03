@@ -1,2 +1,27 @@
-credentials.json
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Sensitive configuration files
+config/config.php
+razorpay-config.php
+
+# Dependencies
 /vendor/
+node_modules/
+
+# Vercel
+.vercel/
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Local PHP / Composer files
+composer.phar

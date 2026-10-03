@@ -1,46 +1,31 @@
 {
   "functions": {
-    "api/**/*.php": {
+    "api/router.php": {
+      "runtime": "vercel-php@0.7.3"
+    },
+    "api/process-registration.php": {
+      "runtime": "vercel-php@0.7.3"
+    },
+    "api/process-registration2.php": {
       "runtime": "vercel-php@0.7.3"
     }
   },
   "routes": [
-    { "src": "/assets/(.*)", "dest": "/assets/$1" },
-
-    { "src": "/about.php", "dest": "/api/about.php" },
-    { "src": "/create-order.php", "dest": "/api/create-order.php" },
-    { "src": "/create-order2.php", "dest": "/api/create-order2.php" },
-    { "src": "/contact-submit.php", "dest": "/api/contact-submit.php" },
-    { "src": "/contact.php", "dest": "/api/contact.php" },
-    { "src": "/default.php", "dest": "/api/default.php" },
-    { "src": "/demo.php", "dest": "/api/demo.php" },
-    { "src": "/footer.php", "dest": "/api/footer.php" },
-    { "src": "/form.php", "dest": "/api/form.php" },
-    { "src": "/gallery.php", "dest": "/api/gallery.php" },
-    { "src": "/header.php", "dest": "/api/header.php" },
-    { "src": "/index.php", "dest": "/api/index.php" },
-    { "src": "/login.php", "dest": "/api/login.php" },
-    { "src": "/mandatory-documents.php", "dest": "/api/mandatory-documents.php" },
-    { "src": "/organisers.php", "dest": "/api/organisers.php" },
-    { "src": "/pay-fee.php", "dest": "/api/pay-fee.php" },
-    { "src": "/portfolio.php", "dest": "/api/portfolio.php" },
-    { "src": "/privacy-policy.php", "dest": "/api/privacy-policy.php" },
-    { "src": "/refund-policy.php", "dest": "/api/refund-policy.php" },
-    { "src": "/reg-submit.php", "dest": "/api/reg-submit.php" },
-    { "src": "/reg-submit2.php", "dest": "/api/reg-submit2.php" },
-    { "src": "/registration-policies.php", "dest": "/api/registration-policies.php" },
-    { "src": "/registration.php", "dest": "/api/registration.php" },
-    { "src": "/registration2.php", "dest": "/api/registration2.php" },
-    { "src": "/review.php", "dest": "/api/review.php" },
-    { "src": "/selection-process.php", "dest": "/api/selection-process.php" },
-    { "src": "/state-league.php", "dest": "/api/state-league.php" },
-    { "src": "/team.php", "dest": "/api/team.php" },
-    { "src": "/terms-conditions.php", "dest": "/api/terms-conditions.php" },
-    { "src": "/trials.php", "dest": "/api/trials.php" },
-    { "src": "/videos.php", "dest": "/api/videos.php" },
-    { "src": "/process-registration.php", "dest": "/api/process-registration.php" },
-    { "src": "/process-registration2.php", "dest": "/api/process-registration2.php" },
-
-    { "src": "/(.*)", "dest": "/api/index.php" }
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/process-registration.php",
+      "dest": "/api/process-registration.php"
+    },
+    {
+      "src": "/process-registration2.php",
+      "dest": "/api/process-registration2.php"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/api/router.php"
+    }
   ]
 }
