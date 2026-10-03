@@ -3,9 +3,7 @@
 .env.*
 !.env.example
 
-# Sensitive configuration files
-config/config.php
-razorpay-config.php
+
 
 # Dependencies
 /vendor/
